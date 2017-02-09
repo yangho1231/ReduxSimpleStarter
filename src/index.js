@@ -4,6 +4,9 @@ import SearchBar from './component/searchbar.js';
 import YTSearch from 'youtube-api-search';
 import VideoList from './component/video_list.js';
 import VideoDetail from './component/video_detail.js';
+import _ from 'lodash';
+//Can use debounce to throttle search duration to make it smoother.
+//Use npm lodash. Use _ instead lodash
 const API_KEY = 'AIzaSyDYwnxMs7u67aRYtzqlPM0ukLSxC6Mxt3E';
 
 
@@ -17,7 +20,10 @@ class App extends Component {
         };
         //Instead of ({videos: videos}) You can just put({videos})
         //Only works if key and value are identical
-        YTSearch({key: API_KEY, term: 'lebron'}, (videos) => {
+        this.videoSearch('lebron');
+    }
+    videoSearch(term) {
+        YTSearch({key: API_KEY, term: term}, (videos) => {
             this.setState({ 
                 videos: videos,
                 selectedVideo: videos[0]
@@ -25,9 +31,11 @@ class App extends Component {
         })
     }
     render () {
+        const videoSearch = _.debounce( (term) => { this.videoSearch(term) }, 500);
+        //_.debounce passes "(term) => { this.videoSearch(term) }" and returns new function that can only be called every .5 second.
         return (
             <div>
-                <SearchBar />
+                <SearchBar onSearchTermChange={ videoSearch }/>
                 <VideoDetail video={this.state.selectedVideo} />
                 <VideoList
                     onVideoSelect={ selectedVideo => this.setState({selectedVideo}) } 
