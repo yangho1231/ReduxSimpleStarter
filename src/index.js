@@ -7,7 +7,7 @@ import VideoDetail from './component/video_detail.js';
 import _ from 'lodash';
 //Can use debounce to throttle search duration to make it smoother.
 //Use npm lodash. Use _ instead lodash
-const API_KEY = 'AIzaSyDYwnxMs7u67aRYtzqlPM0ukLSxC6Mxt3E';
+//Need to create key. const API_KEY=''
 
 
 class App extends Component {
